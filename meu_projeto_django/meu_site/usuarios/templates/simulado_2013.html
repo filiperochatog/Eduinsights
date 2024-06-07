@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado 2013</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007BFF;
+            --hover-color: #0056b3;
+            --text-color: #ffffff;
+            --background-color: #F5F5F5;
+            --container-bg-color: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --font-btn: #007BFF;
+            --font-btn-hover: #0056b3;
+            --card-color: #E3F2FD;
+            --card-hover-color: #BBDEFB;
+            --gradient-start: #007BFF;
+            --gradient-end: #00C6FF;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px;
+        }
+        .list-group-item:hover, .card:hover {
+            background-color: var(--card-hover-color);
+            cursor: pointer;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px var(--shadow-color);
+        }
+        .navbar-custom {
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            transition: background 0.5s;
+        }
+        .navbar-custom:hover {
+            background: linear-gradient(90deg, var(--gradient-end), var(--gradient-start));
+        }
+        .navbar-custom .navbar-nav .nav-link, .navbar-custom .navbar-brand, .navbar-custom .navbar-toggler-icon {
+            color: var(--text-color);
+            position: relative;
+        }
+        .navbar-custom .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            display: block;
+            margin-top: 5px;
+            right: 0;
+            background: var(--text-color);
+            transition: width 0.4s ease;
+        }
+        .navbar-custom .navbar-nav .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+            background: var(--hover-color);
+        }
+        .container {
+            background-color: var(--container-bg-color);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            margin-top: 20px;
+        }
+        .question-card {
+            background: #fff;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
+            transition: all 0.3s ease-in-out;
+        }
+        .question-card img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 15px;
+        }
+        .btn-outline-primary {
+            margin: 5px;
+            text-align: left;
+            width: 100%;
+        }
+        .btn-outline-primary.selected {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        .timer, .score {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .score-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .feedback {
+            font-weight: bold;
+            font-size: 16px;
+            display: inline-block;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .feedback.correct {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+        .feedback.wrong {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+        .progress {
+            height: 25px;
+        }
+        .report-container {
+            display: none;
+            text-align: left;
+            background-color: var(--container-bg-color);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            margin-top: 20px;
+        }
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: var(--container-bg-color);
+        }
+        .report-table th,
+        .report-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .report-table th {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        .report-table .correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .report-table .wrong {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .report-table .unanswered {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .report-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .report-table tr:hover {
+            background-color: #ddd;
+        }
+        .report-table-header {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .report-btn {
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .report-btn:hover {
+            background-color: var(--hover-color);
+        }
+        .icon-correct {
+            color: green;
+            margin-right: 5px;
+        }
+        .icon-wrong {
+            color: red;
+            margin-right: 5px;
+        }
+        .icon-unanswered {
+            color: #856404;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom" aria-label="Navegação principal">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'aluno_home' %}"><i class="fas fa-home"></i> Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dicas_estudos' %}"><i class="fas fa-lightbulb"></i> Dicas de Estudo</a>
+                    </li>
+                    <li><a class="nav-link" href="{% url 'editar_perfilaluno' %}"><i class="fas fa-edit"></i> Editar Perfil</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mudar_senhaaluno' %}"><i class="fas fa-key"></i> Mudar Senha</a></li>
+                </ul>
+                <span class="navbar-text">
+                    <a class="nav-link" href="{% url 'sair' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </span>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="timer" id="timer">00:00:00</div>
+        <div class="progress mb-3">
+            <div class="progress-bar" id="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+        </div>
+        <div class="score" id="score">Acertos: 0</div>
+        <div class="quiz-container" id="quiz-container">
+            <!-- Questions will be loaded here -->
+        </div>
+        <div class="d-flex justify-content-between">
+            <button id="prev-question" class="btn btn-secondary" onclick="prevQuestion()">Pergunta Anterior</button>
+            <button id="next-question" class="btn btn-primary" onclick="nextQuestion()">Próxima Pergunta</button>
+        </div>
+        <div class="score-container" id="score-container">
+            <h4 id="score-display"></h4>
+            <h5 id="message-display"></h5>
+            <button class="btn btn-info" onclick="showReport()">Ver Relatório</button>
+        </div>
+        <div id="report-container" class="report-container">
+            <h4 class="report-table-header"><i class="fas fa-chart-bar"></i> Relatório de Desempenho</h4>
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>Pergunta</th>
+                        <th>Sua Resposta</th>
+                        <th>Resposta Correta</th>
+                    </tr>
+                </thead>
+                <tbody id="report-list">
+                    <!-- Relatório será gerado dinamicamente -->
+                </tbody>
+            </table>
+            <button class="report-btn mt-3" onclick="hideReport()">Fechar Relatório</button>
+        </div>
+        <button class="btn btn-danger mt-3" onclick="resetQuiz()">Reiniciar Simulado</button>
+        <p class="text-center mt-3">Você pode navegar pelo simulado usando as setas do teclado para avançar ou retroceder nas perguntas, e as teclas de A a E para selecionar as respostas.</p>
+    </div>
+    <script>
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let questions = [];
+        let userAnswers = [];
+        let startTime = new Date().getTime();
+        let totalElapsedTime = 0;
+        let timerInterval = setInterval(updateTimer, 1000);
+
+        function displayQuestion(index) {
+            questions.forEach((q, i) => {
+                q.element.style.display = i === index ? 'block' : 'none';
+            });
+            document.getElementById('prev-question').style.display = index > 0 ? 'inline-block' : 'none';
+            document.getElementById('next-question').style.display = index < questions.length - 1 ? 'inline-block' : 'none';
+            updateProgressBar(index + 1, questions.length);
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion(currentQuestionIndex);
+            } else {
+                endQuiz();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function endQuiz() {
+            clearInterval(timerInterval);
+            totalElapsedTime = new Date().getTime() - startTime;
+            document.getElementById('score-display').textContent = `Você acertou ${score} de ${questions.length} perguntas.`;
+            const percentage = (score / questions.length) * 100;
+            let message = "";
+            if (percentage >= 90) {
+                message = "Excelente trabalho! Parabéns!";
+            } else if (percentage >= 70) {
+                message = "Bom trabalho! Continue assim!";
+            } else {
+                message = "Você pode melhorar! Não desista!";
+            }
+            document.getElementById('message-display').textContent = message;
+            document.getElementById('score-container').style.display = 'block';
+            document.getElementById('next-question').style.display = 'none';
+            document.getElementById('prev-question').style.display = 'none';
+        }
+
+        function updateTimer() {
+            const elapsedTime = new Date().getTime() - startTime;
+            const hours = Math.floor((elapsedTime / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
+            const seconds = Math.floor((elapsedTime / 1000) % 60);
+            document.getElementById('timer').textContent = 
+                (hours < 10 ? "0" + hours : hours) + ":" +
+                (minutes < 10 ? "0" + minutes : minutes) + ":" +
+                (seconds < 10 ? "0" + seconds : seconds);
+        }
+
+        function updateProgressBar(current, total) {
+            const progressBar = document.getElementById('progress-bar');
+            const percentage = (current / total) * 100;
+            progressBar.style.width = `${percentage}%`;
+            progressBar.textContent = `${Math.round(percentage)}%`;
+        }
+
+        function showReport() {
+            document.getElementById('score-container').style.display = 'none';
+            const reportList = document.getElementById('report-list');
+            reportList.innerHTML = '';
+            questions.forEach((question, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>Pergunta ${index + 1}</td>
+                    <td class="${userAnswers[index] === question.correct ? 'correct' : userAnswers[index] === null ? 'unanswered' : 'wrong'}">${userAnswers[index] ? '<i class="fas fa-' + (userAnswers[index] === question.correct ? 'check icon-correct' : 'times icon-wrong') + '"></i>' + userAnswers[index].toUpperCase() : '<i class="fas fa-question icon-unanswered"></i>Não respondida'}</td>
+                    <td>${question.correct.toUpperCase()}</td>
+                `;
+                reportList.appendChild(row);
+            });
+            document.getElementById('report-container').style.display = 'block';
+        }
+
+        function hideReport() {
+            document.getElementById('report-container').style.display = 'none';
+            document.getElementById('score-container').style.display = 'block';
+        }
+
+        function resetQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            startTime = new Date().getTime();
+            clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+            document.getElementById('score-container').style.display = 'none';
+            document.getElementById('report-container').style.display = 'none';
+            document.getElementById('score').textContent = 'Acertos: 0';
+            updateProgressBar(0, questions.length);
+            questions.forEach(question => {
+                question.element.querySelectorAll('.btn-outline-primary').forEach(button => {
+                    button.classList.remove('selected');
+                });
+                const feedback = question.element.querySelector('.feedback');
+                if (feedback) {
+                    feedback.style.opacity = '0';
+                }
+            });
+            displayQuestion(0);
+            setupEventListeners();
+        }
+
+        function setupEventListeners() {
+            questions.forEach((question, index) => {
+                ['a', 'b', 'c', 'd', 'e'].forEach(letter => {
+                    const button = document.getElementById(`btn-${index}-${letter}`);
+                    if (button) {
+                        button.onclick = () => checkAnswer(question.correct, letter, index);
+                    }
+                });
+            });
+        }
+
+        fetch('http://127.0.0.1:8000/api/submissions/')
+            .then(response => response.json())
+            .then(data => {
+                const filteredData = data.filter(submission => submission.ano === 2014);
+                const container = document.getElementById('quiz-container');
+                filteredData.forEach((submission, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'question-card';
+                    let imageHTML = '';
+                    ['images', 'image2', 'image3', 'image4', 'image5', 'image6'].forEach(imgField => {
+                        if (submission[imgField]) {
+                            imageHTML += `<img src="${submission[imgField]}" alt="Imagem da Questão ${index + 1}, Imagem ${imgField}">`;
+                        }
+                    });
+                    div.innerHTML = `
+                        <p><strong>Pergunta ${index + 1}</strong></p>
+                        <p>${submission.enunciado}</p>
+                        ${imageHTML}
+                        <div>
+                            <button class="btn btn-outline-primary text-start" id="btn-${index}-a">A. ${submission.alternativa_a}</button>
+                            <button class="btn btn-outline-primary text-start" id="btn-${index}-b">B. ${submission.alternativa_b}</button>
+                            <button class="btn btn-outline-primary text-start" id="btn-${index}-c">C. ${submission.alternativa_c}</button>
+                            <button class="btn btn-outline-primary text-start" id="btn-${index}-d">D. ${submission.alternativa_d}</button>
+                            <button class="btn btn-outline-primary text-start" id="btn-${index}-e">E. ${submission.alternativa_e}</button>
+                        </div>
+                        <div id="result-${index}" class="mt-2"></div>
+                    `;
+                    container.appendChild(div);
+                    questions.push({ element: div, correct: submission.resposta_correta.toLowerCase() });
+                    userAnswers.push(null);
+                });
+                displayQuestion(0);
+                setupEventListeners();
+                document.addEventListener('keydown', handleKeydown);
+            })
+            .catch(error => console.error('Error loading the submissions:', error));
+
+        function checkAnswer(correct, userChoice, index) {
+            if (userAnswers[index] !== null) return;
+            const result = document.getElementById('result-' + index);
+            const buttons = document.querySelectorAll(`#btn-${index} button`);
+            buttons.forEach(button => button.classList.remove('selected'));
+            const selectedButton = document.getElementById(`btn-${index}-${userChoice}`);
+            selectedButton.classList.add('selected');
+            const isCorrect = userChoice.toLowerCase() === correct;
+            result.innerHTML = `<span class="feedback ${isCorrect ? 'correct' : 'wrong'}" style="opacity: 1;">${isCorrect ? 'Correto! 🎉' : `Errado. A resposta correta é: <strong>${correct.toUpperCase()}</strong>`}</span>`;
+            if (isCorrect) {
+                score++;
+            }
+            userAnswers[index] = userChoice.toLowerCase();
+            document.getElementById('score').textContent = `Acertos: ${score}`;
+        }
+
+        function handleKeydown(event) {
+            if (event.key === 'ArrowRight') {
+                nextQuestion();
+            } else if (event.key === 'ArrowLeft') {
+                prevQuestion();
+            } else if (['a', 'b', 'c', 'd', 'e'].includes(event.key.toLowerCase())) {
+                const letter = event.key.toLowerCase();
+                const question = questions[currentQuestionIndex];
+                const button = document.getElementById(`btn-${currentQuestionIndex}-${letter}`);
+                if (button) {
+                    checkAnswer(question.correct, letter, currentQuestionIndex);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

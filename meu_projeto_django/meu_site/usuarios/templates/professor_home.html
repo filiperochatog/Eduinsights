@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial do Professor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --primary-color: #0062cc;
+        --hover-color: #004ba0;
+        --text-color: #212529;
+        --background-color: #f8f9fa;
+        --container-bg-color: #ffffff;
+        --shadow-color: rgba(100, 100, 111, 0.2);
+        --font-btn: #007bff;
+        --font-btn-hover: #0056b3;
+      }
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--background-color);
+        margin: 0;
+        padding: 20px;
+        transition: all 0.3s ease;
+      }
+      .list-group-item {
+        border-radius: 10px;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 6px var(--shadow-color);
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        background-color: var(--container-bg-color);
+        border: none;
+      }
+      .list-group-item:hover {
+        background-color: var(--hover-color);
+        color: white;
+        cursor: pointer;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px var(--shadow-color);
+      }
+      .navbar-custom {
+        background-color: var(--primary-color);
+      }
+      .navbar-custom .navbar-nav .nav-link {
+        color: white;
+      }
+      .navbar-custom .navbar-nav .nav-link:hover {
+        background-color: var(--hover-color);
+      }
+      .navbar-custom .navbar-brand, .navbar-custom .navbar-toggler {
+        color: white;
+      }
+      .navbar-custom .navbar-text .logout-link, 
+      .navbar-custom .navbar-text .logout-link:hover {
+        color: white;
+      }
+      .container {
+        background-color: var(--container-bg-color);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px var(--shadow-color);
+        margin-top: 20px;
+      }
+      h2.text-center {
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+      .aumentarfont {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      .btn-font {
+        background-color: var(--font-btn);
+        color: white;
+        border-radius: 5px;
+        padding: 5px 10px;
+        transition: background-color 0.3s;
+      }
+      .btn-font:hover {
+        background-color: var(--font-btn-hover);
+      }
+      .btn-font i {
+        margin-right: 5px;
+      }
+      .dark-mode {
+        --primary-color: #4e73df;
+        --hover-color: #3658a7;
+        --text-color: #f8f9fa;
+        --background-color: #343a40;
+        --container-bg-color: #3f474e;
+        --shadow-color: rgba(0, 0, 0, 0.5);
+        --font-btn: #007bff;
+        --font-btn-hover: #0056b3;
+      }
+    </style>    
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom" aria-label="Navegação principal">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+          data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'professor_home' %}"><i class="fas fa-home"></i> Início</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-file-alt"></i> Provas
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li><a class="dropdown-item" href="{% url 'prova2008' %}">Prova 2008</a></li>
+                  <li><a class="dropdown-item" href="{% url 'prova2011' %}">Prova 2011</a></li>
+                  <li><a class="dropdown-item" href="{% url 'prova2014' %}">Prova 2014</a></li>
+                  <li><a class="dropdown-item" href="{% url 'prova2017' %}">Prova 2017</a></li>
+                  <li><a class="dropdown-item" href="{% url 'prova2019' %}">Prova 2019</a></li>
+                  <li><a class="dropdown-item" href="{% url 'prova2099' %}">Todos os anos!</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-chart-bar"></i> Análise Gráfica
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                  <li><a class="dropdown-item" href="{% url 'grafico2008' %}">Análise 2008</a></li>
+                  <li><a class="dropdown-item" href="{% url 'grafico2011' %}">Análise 2011</a></li>
+                  <li><a class="dropdown-item" href="{% url 'grafico2014' %}">Análise 2014</a></li>
+                  <li><a class="dropdown-item" href="{% url 'grafico2017' %}">Análise 2017</a></li>
+                  <li><a class="dropdown-item" href="{% url 'grafico2019' %}">Análise 2019</a></li>
+                  <li><a class="dropdown-item" href="{% url 'grafico2099' %}">Todos os anos!</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-user-circle"></i> Perfil
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
+                  <li><a class="dropdown-item" href="{% url 'editar_perfil' %}"><i class="fas fa-edit"></i> Editar Perfil</a></li>
+                  <li><a class="dropdown-item" href="{% url 'mudar_senha' %}"><i class="fas fa-key"></i> Mudar Senha</a></li>
+                </ul>
+              </li>
+            </ul>
+            <span class="navbar-text">
+              <a class="nav-link logout-link" href="{% url 'sair' %}" aria-label="Sair da conta"><i class="fas fa-sign-out-alt"></i> Sair</a>
+            </span>
+          </div>
+        </div>
+      </nav>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Seja bem-vindo(a), {{ user_name }}!</h2>
+    <ul class="list-group list-group-flush">
+      <a href="{% url 'prova2008' %}" class="list-group-item" aria-label="Ir para a Prova 2008">
+        <div class="d-flex justify-content-between align-items-center">
+          Prova 2008
+          <span class="btn btn-primary"><i class="fas fa-angle-right"></i></span>
+        </div>
+      </a>
+    </ul>
+    <ul class="list-group list-group-flush">
+      <a href="{% url 'prova2011' %}" class="list-group-item" aria-label="Ir para a Prova 2011">
+        <div class="d-flex justify-content-between align-items-center">
+          Prova 2011
+          <span class="btn btn-primary"><i class="fas fa-angle-right"></i></span>
+        </div>
+      </a>
+    </ul>    
+    <ul class="list-group list-group-flush">
+      <a href="{% url 'prova2014' %}" class="list-group-item" aria-label="Ir para a Prova 2014">
+        <div class="d-flex justify-content-between align-items-center">
+          Prova 2014
+          <span class="btn btn-primary"><i class="fas fa-angle-right"></i></span>
+        </div>
+      </a>
+    </ul>
+    <ul class="list-group list-group-flush">
+      <a href="{% url 'prova2017' %}" class="list-group-item" aria-label="Ir para a Prova 2017">
+        <div class="d-flex justify-content-between align-items-center">
+          Prova 2017
+          <span class="btn btn-primary"><i class="fas fa-angle-right"></i></span>
+        </div>
+      </a>
+    </ul>
+    <ul class="list-group list-group-flush">
+      <a href="{% url 'prova2019' %}" class="list-group-item" aria-label="Ir para a Prova 2019">
+        <div class="d-flex justify-content-between align-items-center">
+          Prova 2019
+          <span class="btn btn-primary"><i class="fas fa-angle-right"></i></span>
+        </div>
+      </a>
+    </ul>
+    <ul class="list-group list-group-flush">
+      <a href="{% url 'prova2099' %}" class="list-group-item" aria-label="Todos os anos">
+        <div class="d-flex justify-content-between align-items-center">
+          Todos os anos!
+          <span class="btn btn-primary"><i class="fas fa-angle-right"></i></span>
+        </div>
+      </a>
+    </ul>
+    <div class="aumentarfont">
+      <button id="increase-font" class="btn btn-font btn-sm"><i class="fas fa-plus"></i> Aumentar</button>
+      <button id="decrease-font" class="btn btn-font btn-sm"><i class="fas fa-minus"></i> Diminuir</button>
+      <button id="reset-font" class="btn btn-font btn-sm"><i class="fas fa-undo"></i> Resetar</button>
+      <button class="btn btn-secondary btn-sm" id="toggleDarkModeButton" onclick="toggleDarkMode()">
+        <i class="fas fa-moon"></i> Alternar para Tema Escuro
+      </button>
+    </div>
+    <a href="http://127.0.0.1:8000/api/submissions/" id="add-question" class="btn btn-primary mt-3" target="_blank">Adicionar Questão</a>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const increaseFontBtn = document.getElementById('increase-font');
+        const decreaseFontBtn = document.getElementById('decrease-font');
+        const resetFontBtn = document.getElementById('reset-font');
+        let currentFontSize = 100; // Porcentagem
+    
+        increaseFontBtn.addEventListener('click', function() {
+            currentFontSize += 10;
+            document.body.style.fontSize = currentFontSize + '%';
+        });
+    
+        decreaseFontBtn.addEventListener('click', function() {
+            currentFontSize = Math.max(currentFontSize - 10, 100); // Não permite menor que o padrão
+            document.body.style.fontSize = currentFontSize + '%';
+        });
+    
+        resetFontBtn.addEventListener('click', function() {
+            currentFontSize = 100;
+            document.body.style.fontSize = '100%';
+        });
+    });
+
+    function toggleDarkMode() {
+        var body = document.body;
+        var button = document.getElementById('toggleDarkModeButton');
+        body.classList.toggle('dark-mode');
+        if (body.classList.contains('dark-mode')) {
+            button.innerHTML = '<i class="fas fa-sun"></i> Alternar para Tema Claro';
+        } else {
+            button.innerHTML = '<i class="fas fa-moon"></i> Alternar para Tema Escuro';
+        }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

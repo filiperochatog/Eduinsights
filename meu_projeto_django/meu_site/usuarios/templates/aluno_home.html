@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Simulados</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --primary-color: #007BFF; /* Azul vibrante */
+        --hover-color: #0056b3; /* Azul escuro */
+        --text-color: #ffffff; /* Branco para texto da navbar */
+        --background-color: #F5F5F5; /* Cinza claro */
+        --container-bg-color: #ffffff; /* Branco para fundo dos containers */
+        --shadow-color: rgba(0, 0, 0, 0.2); /* Sombra */
+        --font-btn: #007BFF; /* Azul para botões */
+        --font-btn-hover: #0056b3; /* Azul escuro para hover nos botões */
+        --card-color: #E3F2FD; /* Azul claro para cards */
+        --card-hover-color: #BBDEFB; /* Cor de hover para cards */
+        --gradient-start: #007BFF;
+        --gradient-end: #00C6FF;
+      }
+      body {
+        font-family: 'Roboto', sans-serif;
+        background-color: var(--background-color);
+        margin: 0;
+        padding: 20px;
+      }
+      .list-group-item:hover, .card:hover {
+        background-color: var(--card-hover-color);
+        color: var(--hover-color);
+        cursor: pointer;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px var(--shadow-color);
+      }
+      .navbar-custom {
+        background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+        transition: background 0.5s;
+      }
+      .navbar-custom:hover {
+        background: linear-gradient(90deg, var(--gradient-end), var(--gradient-start));
+      }
+      .navbar-custom .navbar-nav .nav-link, .navbar-custom .navbar-brand, .navbar-custom .navbar-toggler-icon {
+        color: var(--text-color);
+        position: relative;
+      }
+      .navbar-custom .navbar-nav .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        display: block;
+        margin-top: 5px;
+        right: 0;
+        background: var(--text-color);
+        transition: width 0.4s ease;
+      }
+      .navbar-custom .navbar-nav .nav-link:hover::after {
+        width: 100%;
+        left: 0;
+        background: var(--hover-color);
+      }
+      .container {
+        background-color: var(--container-bg-color);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px var(--shadow-color);
+        margin-top: 20px;
+      }
+      h2.text-center {
+        color: var(--primary-color);
+        font-weight: 700;
+      }
+      .card {
+        margin: 10px;
+        padding: 20px;
+        background-color: var(--card-color);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px var(--shadow-color);
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+      }
+      .card i {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: var(--primary-color);
+      }
+      .card:hover {
+        transform: rotateY(180deg);
+      }
+      .navbar-toggler {
+        border: none;
+      }
+      .bounce {
+        animation: bounce 2s infinite;
+      }
+      @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-30px);
+        }
+        60% {
+          transform: translateY(-15px);
+        }
+      }
+      .glow {
+        animation: glow 1.5s ease-in-out infinite alternate;
+      }
+      @keyframes glow {
+        from {
+          box-shadow: 0 0 10px var(--primary-color);
+        }
+        to {
+          box-shadow: 0 0 20px var(--primary-color), 0 0 30px var(--primary-color);
+        }
+      }
+    </style>    
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-custom" aria-label="Navegação principal">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'aluno_home' %}"><i class="fas fa-home"></i> Início</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'dicas_estudos' %}"><i class="fas fa-lightbulb"></i> Dicas de Estudo</a>
+                </li>
+                <li><a class="nav-link" href="{% url 'editar_perfilaluno' %}"><i class="fas fa-edit"></i> Editar Perfil</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'mudar_senhaaluno' %}"><i class="fas fa-key"></i> Mudar Senha</a></li>
+            </ul>
+            <span class="navbar-text">
+                <a class="nav-link" href="{% url 'sair' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </span>
+        </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Bem-vindo(a), {{ user_name }}! <br>Escolha seu simulado:</h2>
+    <div class="d-flex flex-wrap justify-content-center">
+      <a href="{% url 'simulado_2008' %}" style="text-decoration: none; color: inherit;">
+          <div class="card glow">
+              <i class="fas fa-calendar-alt bounce"></i>
+              <p>Simulado 2008</p>
+          </div>
+      </a>
+      <a href="{% url 'simulado_2010' %}" style="text-decoration: none; color: inherit;">
+          <div class="card glow">
+              <i class="fas fa-calendar-alt bounce"></i>
+              <p>Simulado 2011</p>
+          </div>
+      </a>
+      <a href="{% url 'simulado_2013' %}" style="text-decoration: none; color: inherit;">
+          <div class="card glow">
+              <i class="fas fa-calendar-alt bounce"></i>
+              <p>Simulado 2014</p>
+          </div>
+      </a>
+      <a href="{% url 'simulado_2017' %}" style="text-decoration: none; color: inherit;">
+          <div class="card glow">
+              <i class="fas fa-calendar-alt bounce"></i>
+              <p>Simulado 2017</p>
+          </div>
+      </a>
+      <a href="{% url 'simulado_2019' %}" style="text-decoration: none; color: inherit;">
+          <div class="card glow">
+              <i class="fas fa-calendar-alt bounce"></i>
+              <p>Simulado 2019</p>
+          </div>
+      </a>
+      <a href="{% url 'simulado_2099' %}" style="text-decoration: none; color: inherit;">
+        <div class="card glow">
+            <i class="fas fa-calendar-alt bounce"></i>
+            <p>Todos os anos!</p>
+        </div>
+    </a>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova 2014</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #0062cc;
+            --hover-color: #004ba0;
+            --text-color: #212529;
+            --background-color: #f8f9fa;
+            --container-bg-color: #ffffff;
+            --shadow-color: rgba(100, 100, 111, 0.2);
+            --font-btn: #007bff;
+            --font-btn-hover: #0056b3;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .accordion-item {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            margin-bottom: 10px;
+        }
+        .accordion-button {
+            background-color: var(--container-bg-color);
+            color: var(--text-color);
+            font-weight: 600;
+        }
+        .accordion-button:hover, .accordion-button:focus {
+            background-color: var(--hover-color);
+            color: white;
+        }
+        .accordion-button:not(.collapsed) {
+            color: white;
+            background-color: var(--primary-color);
+            box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+        }
+        .accordion-body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        .navbar-custom {
+            background-color: var(--primary-color);
+        }
+        .navbar-custom .navbar-nav .nav-link, .navbar-text .nav-link {
+            color: white;
+        }
+        .navbar-custom .navbar-nav .nav-link:hover {
+            background-color: var(--hover-color);
+        }
+        .container {
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+        h2.text-center {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            margin: 10% auto;
+            padding: 20px;
+            width: 30%; /* Moderate expansion */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover, .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .row {
+            --bs-gutter-x: 1.5rem;
+        }
+        img.question-image {
+            width: 50%; /* Smaller default size for images on page */
+            height: auto;
+            cursor: pointer;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .title-detail {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0; /* Remove espaço extra abaixo do título */
+        }
+        
+        .explore-text {
+            font-size: 1.2rem; /* Tamanho ligeiramente maior para mais destaque */
+            color: var(--text-color);
+            margin-top: 10px; /* Espaço após o título */
+            margin-bottom: 20px; /* Espaço antes do botão */
+            font-style: italic; /* Estilo itálico para enfatizar */
+        }
+        
+        .btn-grafico {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px; /* Diminuído para um tamanho um pouco menor */
+            border-radius: 5px;
+            border: none;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-bottom: 30px; /* Espaço adicionado abaixo do botão */
+        }
+        
+        .btn-grafico:hover {
+            background-color: var(--hover-color);
+            transform: scale(1.03); /* Efeito de escala ligeiramente reduzido */
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .form-select, .form-control {
+            border-radius: 5px;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .form-select:focus, .form-control:focus {
+            border-color: var(--hover-color);
+            box-shadow: 0 0 0 0.25rem rgba(0, 75, 160, 0.25);
+        }
+        .aumentarfont {
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn-font {
+            background-color: var(--font-btn);
+            color: white;
+            border-radius: 5px;
+            padding: 5px 10px;
+            transition: background-color 0.3s;
+        }
+        .btn-font:hover {
+            background-color: var(--font-btn-hover);
+        }
+        .btn-font i {
+            margin-right: 5px;
+        }
+        .dark-mode {
+            --primary-color: #4e73df;
+            --hover-color: #3658a7;
+            --text-color: #f8f9fa;
+            --background-color: #343a40;
+            --container-bg-color: #3f474e;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --font-btn: #007bff;
+            --font-btn-hover: #0056b3;
+        }
+    </style>    
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom" aria-label="Navegação principal">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+          data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'professor_home' %}"><i class="fas fa-home"></i> Início</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-file-alt"></i> Provas
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li><a class="dropdown-item" href="{% url 'prova2008' %}">Prova 2008</a></li>
+                    <li><a class="dropdown-item" href="{% url 'prova2011' %}">Prova 2011</a></li>
+                    <li><a class="dropdown-item" href="{% url 'prova2014' %}">Prova 2014</a></li>
+                    <li><a class="dropdown-item" href="{% url 'prova2017' %}">Prova 2017</a></li>
+                    <li><a class="dropdown-item" href="{% url 'prova2019' %}">Prova 2019</a></li>
+                    <li><a class="dropdown-item" href="{% url 'prova2099' %}">Todos os anos!</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-chart-bar"></i> Análise Gráfica
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                    <li><a class="dropdown-item" href="{% url 'grafico2008' %}">Análise 2008</a></li>
+                    <li><a class="dropdown-item" href="{% url 'grafico2011' %}">Análise 2011</a></li>
+                    <li><a class="dropdown-item" href="{% url 'grafico2014' %}">Análise 2014</a></li>
+                    <li><a class="dropdown-item" href="{% url 'grafico2017' %}">Análise 2017</a></li>
+                    <li><a class="dropdown-item" href="{% url 'grafico2019' %}">Análise 2019</a></li>
+                    <li><a class="dropdown-item" href="{% url 'grafico2099' %}">Todos os anos!</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-user-circle"></i> Perfil
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
+                  <li><a class="dropdown-item" href="{% url 'editar_perfil' %}"><i class="fas fa-edit"></i> Editar Perfil</a></li>
+                  <li><a class="dropdown-item" href="{% url 'mudar_senha' %}"><i class="fas fa-key"></i> Mudar Senha</a></li>
+                </ul>
+              </li>
+            </ul>
+            <span class="navbar-text">
+              <a class="nav-link logout-link" href="{% url 'sair' %}"><i class="fas fa-sign-out-alt"></i> Sair</a>
+            </span>
+          </div>
+        </div>
+      </nav>
+      <div class="container">
+        <h2 class="text-center title-detail">Detalhes das Questões de 2014!</h2>
+        <p class="explore-text text-center">Explore a profundidade das questões, {{ user.get_full_name|default:user.username }}!</p>
+        <div class="text-center">
+            <a href="{% url 'grafico2008' %}" class="btn btn-grafico">Análise Gráfica 📊</a>
+        </div>
+
+        <div class="filter-container">
+            <div class="col-md-6">
+                <label for="bloomFilter" class="form-label">Filtro de Categoria Bloom:</label>
+                <select id="bloomFilter" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="AN">Análise</option>
+                    <option value="AP">Aplicação</option>
+                    <option value="CO">Compreensão</option>
+                    <option value="EV">Avaliação</option>
+                    <option value="KN">Conhecimento</option>
+                    <option value="NP">Não faz parte da taxonomia</option>
+                    <option value="SY">Síntese</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="componenteFilter" class="form-label">Filtro de Componentes Curriculares:</label>
+                <input type="text" id="componenteFilter" class="form-control" placeholder="Exemplo: Estrutura de Dados, Redes de Computadores...">
+            </div>
+        </div>
+        
+        <div class="row" id="questionsGrid">
+            <!-- Itens da grade serão inseridos aqui via JavaScript -->
+        </div>
+        <div class="aumentarfont">
+            <button id="increase-font" class="btn btn-font btn-sm"><i class="fas fa-plus"></i> Aumentar</button>
+            <button id="decrease-font" class="btn btn-font btn-sm"><i class="fas fa-minus"></i> Diminuir</button>
+            <button id="reset-font" class="btn btn-font btn-sm"><i class="fas fa-undo"></i> Resetar</button>
+            <button class="btn btn-secondary btn-sm" id="toggleDarkModeButton" onclick="toggleDarkMode()">
+                <i class="fas fa-moon"></i> Alternar para Tema Escuro
+            </button>
+        </div>
+    </div>
+    
+    <!-- Modal para visualização de imagens -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img src="" alt="Imagem ampliada" class="modal-image">
+        </div>
+    </div>
+
+    <script>
+        const bloomCategories = {
+            "AN": "Análise",
+            "AP": "Aplicação",
+            "CO": "Compreensão",
+            "EV": "Avaliação",
+            "KN": "Conhecimento",
+            "NP": "Não faz parte da taxonomia",
+            "SY": "Síntese"
+        };
+
+        let originalData = [];
+
+        function loadData() {
+            fetch('http://127.0.0.1:8000/api/submissions/')
+                .then(response => response.json())
+                .then(data => {
+                    originalData = data.filter(item => item.ano === "2014" || item.ano === 2014); // Adiciona filtro para o ano de 2008
+                    originalData.sort((a, b) => a.numero - b.numero); // Ordena as questões numericamente
+                    renderData(originalData);
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Falha ao buscar dados: ' + error.message);
+                });
+        }
+
+        function renderData(data) {
+            const grid = document.getElementById('questionsGrid');
+            grid.innerHTML = '';
+            data.forEach((item, index) => {
+                const gridItem = document.createElement('div');
+                gridItem.classList.add('col-md-4');
+                const accordion = document.createElement('div');
+                accordion.classList.add('accordion', 'w-100');
+                const accordionItem = document.createElement('div');
+                accordionItem.classList.add('accordion-item');
+                const commentsSection = item.comentario ? `<div class="comments"><strong>Comentários:</strong> ${item.comentario}</div>` : '';
+                const categoriaBloom = bloomCategories[item.categoria_bloom] || 'Categoria não especificada';
+                accordionItem.innerHTML = `
+                    <h2 class="accordion-header" id="heading${index}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="false" aria-controls="collapse${index}">
+                            <strong>Questão ${item.numero} - Ano: ${item.ano}</strong>
+                        </button>
+                    </h2>
+                    <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-bs-parent="#questionsAccordion">
+                        <div class="accordion-body">
+                            <div class="question-text"><strong>Enunciado:</strong> ${item.enunciado}</div>
+                            ${createImageElement(item.images)}
+                            ${createImageElement(item.image2)}
+                            ${createImageElement(item.image3)}
+                            ${createImageElement(item.image4)}
+                            ${createImageElement(item.image5)}
+                            ${createImageElement(item.image6)}
+                            <div class="answer"><strong>A:</strong> ${item.alternativa_a}</div>
+                            <div class="answer"><strong>B:</strong> ${item.alternativa_b}</div>
+                            <div class="answer"><strong>C:</strong> ${item.alternativa_c}</div>
+                            <div class="answer"><strong>D:</strong> ${item.alternativa_d}</div>
+                            <div class="answer"><strong>E:</strong> ${item.alternativa_e}</div>
+                            <div><strong>Resposta Correta:</strong> ${item.resposta_correta}</div>
+                            <div><strong>Categoria Bloom:</strong> ${categoriaBloom}</div>
+                            <div><strong>Componentes Curriculares:</strong> ${item.componentes_curriculares}</div>
+                            ${commentsSection}
+                        </div>
+                    </div>
+                `;
+                accordion.appendChild(accordionItem);
+                gridItem.appendChild(accordion);
+                grid.appendChild(gridItem);
+            });
+        }
+
+        function createImageElement(imageUrl) {
+            if (imageUrl) {
+                return `<img src="${imageUrl}" onclick="openModal(this.src)" class="question-image" alt="Imagem" />`;
+            }
+            return '';
+        }
+
+        const modal = document.getElementById('myModal');
+        const modalImg = document.querySelector('.modal-content img');
+        const span = document.getElementsByClassName("close")[0];
+
+        function openModal(src) {
+            modal.style.display = "block";
+            modalImg.src = src;
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        document.getElementById('bloomFilter').addEventListener('change', function() {
+            const selectedCategory = this.value;
+            const filteredData = originalData.filter(item => selectedCategory === '' || item.categoria_bloom === selectedCategory);
+            renderData(filteredData);
+        });
+
+        document.getElementById('componenteFilter').addEventListener('input', function() {
+            const searchQuery = this.value.toLowerCase();
+            const filteredData = originalData.filter(item => item.componentes_curriculares.toLowerCase().includes(searchQuery));
+            renderData(filteredData);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const increaseFontBtn = document.getElementById('increase-font');
+            const decreaseFontBtn = document.getElementById('decrease-font');
+            const resetFontBtn = document.getElementById('reset-font');
+            let currentFontSize = 100; // Porcentagem
+        
+            increaseFontBtn.addEventListener('click', function() {
+                currentFontSize += 10;
+                document.body.style.fontSize = currentFontSize + '%';
+            });
+        
+            decreaseFontBtn.addEventListener('click', function() {
+                currentFontSize = Math.max(currentFontSize - 10, 100); // Não permite menor que o padrão
+                document.body.style.fontSize = currentFontSize + '%';
+            });
+        
+            resetFontBtn.addEventListener('click', function() {
+                currentFontSize = 100;
+                document.body.style.fontSize = '100%';
+            });
+        });
+
+        function toggleDarkMode() {
+            var body = document.body;
+            var button = document.getElementById('toggleDarkModeButton');
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                button.innerHTML = '<i class="fas fa-sun"></i> Alternar para Tema Claro';
+            } else {
+                button.innerHTML = '<i class="fas fa-moon"></i> Alternar para Tema Escuro';
+            }
+        }
+
+        window.onload = loadData;                
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

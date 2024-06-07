@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise Gráfica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0062cc;
+            --hover-color: #004ba0;
+            --text-color: #212529;
+            --background-color: #f8f9fa;
+            --container-bg-color: #ffffff;
+            --shadow-color: rgba(100, 100, 111, 0.2);
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px;
+        }
+        .navbar-custom {
+            background-color: var(--primary-color);
+        }
+        .navbar-custom .navbar-nav .nav-link, .navbar-text .nav-link {
+            color: white;
+        }
+        .navbar-custom .navbar-nav .nav-link:hover {
+            background-color: var(--hover-color);
+        }
+        .container {
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h2.text-center {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .grafico-container {
+            margin-bottom: 20px;
+        }
+        .d-none {
+            display: none;
+        }
+        canvas {
+            max-height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom" aria-label="Navegação principal">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+          data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'professor_home' %}"><i class="fas fa-home"></i> Início</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-file-alt"></i> Provas
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li><a class="dropdown-item" href="{% url 'prova2008' %}">Prova 2008</a></li>
+                    <li><a class="dropdown-item" href="{% url 'prova2011' %}">Prova 2011</a></li>
+                    <li><a class="dropdown-item" href="{% url 'prova2014' %}">Prova 2014</a></li>
+                    <li><a class="dropdown-item" href="{% url 'prova2017' %}">Prova 2017</a></li>
+                    <li><a class="dropdown-item" href="{% url 'prova2019' %}">Prova 2019</a></li>
+                    <li><a class="dropdown-item" href="{% url 'prova2099' %}">Todos os anos!</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-chart-bar"></i> Análise Gráfica
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                    <li><a class="dropdown-item" href="{% url 'grafico2008' %}">Análise 2008</a></li>
+                    <li><a class="dropdown-item" href="{% url 'grafico2011' %}">Análise 2011</a></li>
+                    <li><a class="dropdown-item" href="{% url 'grafico2014' %}">Análise 2014</a></li>
+                    <li><a class="dropdown-item" href="{% url 'grafico2017' %}">Análise 2017</a></li>
+                    <li><a class="dropdown-item" href="{% url 'grafico2019' %}">Análise 2019</a></li>
+                    <li><a class="dropdown-item" href="{% url 'grafico2099' %}">Todos os anos!</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-user-circle"></i> Perfil
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
+                  <li><a class="dropdown-item" href="{% url 'editar_perfil' %}"><i class="fas fa-edit"></i> Editar Perfil</a></li>
+                  <li><a class="dropdown-item" href="{% url 'mudar_senha' %}"><i class="fas fa-key"></i> Mudar Senha</a></li>
+                </ul>
+              </li>
+            </ul>
+            <span class="navbar-text">
+              <a class="nav-link logout-link" href="{% url 'sair' %}"><i class="fas fa-sign-out-alt"></i> Sair</a>
+            </span>
+          </div>
+        </div>
+      </nav>
+      <div class="container">
+        <h2 class="text-center">Análises Gráficas</h2>
+        <div class="d-flex justify-content-center mb-4">
+            <button class="btn btn-primary mx-2" onclick="toggleGraph('taxonomia')">Taxonomia de Bloom</button>
+            <button class="btn btn-primary mx-2" onclick="toggleGraph('componente')">Componentes Curriculares</button>
+        </div>
+        <div id="grafico-container-taxonomia" class="grafico-container">
+            <h3 class="text-center">Taxonomia de Bloom</h3>
+            <div class="d-flex justify-content-center mb-3">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="taxonomiaGraphType" id="taxonomiaLine" value="line" onclick="showTaxonomiaGraph('line')" checked>
+                    <label class="form-check-label" for="taxonomiaLine">Linha</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="taxonomiaGraphType" id="taxonomiaBar" value="bar" onclick="showTaxonomiaGraph('bar')">
+                    <label class="form-check-label" for="taxonomiaBar">Barras</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="taxonomiaGraphType" id="taxonomiaDonut" value="doughnut" onclick="showTaxonomiaGraph('doughnut')">
+                    <label class="form-check-label" for="taxonomiaDonut">Donut</label>
+                </div>
+            </div>
+            <canvas id="taxonomiaBloom"></canvas>
+        </div>
+        <div id="grafico-container-componente" class="grafico-container d-none">
+            <h3 class="text-center">Componentes Curriculares</h3>
+            <div class="d-flex justify-content-center mb-3">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="componenteGraphType" id="componenteLine" value="line" onclick="showComponenteGraph('line')" checked>
+                    <label class="form-check-label" for="componenteLine">Linha</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="componenteGraphType" id="componenteBar" value="bar" onclick="showComponenteGraph('bar')">
+                    <label class="form-check-label" for="componenteBar">Barras</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="componenteGraphType" id="componenteDonut" value="doughnut" onclick="showComponenteGraph('doughnut')">
+                    <label class="form-check-label" for="componenteDonut">Donut</label>
+                </div>
+            </div>
+            <canvas id="componenteCurricular"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let taxonomiaChart;
+        let componenteChart;
+        let taxonomiaData;
+        let componenteData;
+        const years = [2008, 2011, 2014, 2017, 2019];
+
+        function toggleGraph(type) {
+            document.querySelectorAll('.grafico-container').forEach(container => {
+                container.classList.add('d-none');
+            });
+            if (type === 'taxonomia') {
+                document.getElementById('grafico-container-taxonomia').classList.remove('d-none');
+                showTaxonomiaGraph(document.querySelector('input[name="taxonomiaGraphType"]:checked').value);
+            } else if (type === 'componente') {
+                document.getElementById('grafico-container-componente').classList.remove('d-none');
+                showComponenteGraph(document.querySelector('input[name="componenteGraphType"]:checked').value);
+            }
+        }
+    
+        async function fetchData() {
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/api/submissions/');
+                const data = response.data;
+                taxonomiaData = {
+                    'Análise': [],
+                    'Aplicação': [],
+                    'Compreensão': [],
+                    'Avaliação': [],
+                    'Conhecimento': [],
+                    'Não faz parte da taxonomia': [],
+                    'Síntese': []
+                };
+                componenteData = {};
+
+                years.forEach(year => {
+                    let taxonomyCounts = {
+                        'AN': 0, 'AP': 0, 'CO': 0, 'EV': 0, 'KN': 0, 'NP': 0, 'SY': 0
+                    };
+                    let componentCounts = {};
+
+                    const submissions = data.filter(sub => sub.ano === year);
+
+                    submissions.forEach(submission => {
+                        taxonomyCounts[submission.categoria_bloom] += 1;
+                        submission.componentes_curriculares.split(', ').forEach(component => {
+                            if (!componentCounts[component]) {
+                                componentCounts[component] = 0;
+                            }
+                            componentCounts[component] += 1;
+                        });
+                    });
+
+                    const bloomLabels = {
+                        'AN': 'Análise',
+                        'AP': 'Aplicação',
+                        'CO': 'Compreensão',
+                        'EV': 'Avaliação',
+                        'KN': 'Conhecimento',
+                        'NP': 'Não faz parte da taxonomia',
+                        'SY': 'Síntese'
+                    };
+
+                    for (let key in taxonomyCounts) {
+                        taxonomiaData[bloomLabels[key]].push(taxonomyCounts[key]);
+                    }
+
+                    for (let component in componentCounts) {
+                        if (!componenteData[component]) {
+                            componenteData[component] = Array(years.length).fill(0);
+                        }
+                        componenteData[component][years.indexOf(year)] = componentCounts[component];
+                    }
+                });
+
+                showTaxonomiaGraph('line');
+                showComponenteGraph('line');
+            } catch (error) {
+                console.error('Error fetching data: ', error);
+            }
+        }
+
+        function showTaxonomiaGraph(type) {
+            if (taxonomiaChart) {
+                taxonomiaChart.destroy();
+            }
+            const ctx = document.getElementById('taxonomiaBloom').getContext('2d');
+            taxonomiaChart = createChart(ctx, type, 'Taxonomia de Bloom', taxonomiaData, years);
+        }
+
+        function showComponenteGraph(type) {
+            if (componenteChart) {
+                componenteChart.destroy();
+            }
+            const ctx = document.getElementById('componenteCurricular').getContext('2d');
+            componenteChart = createChart(ctx, type, 'Componentes Curriculares', componenteData, years);
+        }
+
+        function createChart(ctx, type, label, data, labels) {
+            const colors = [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(199, 199, 199, 1)',
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(54, 162, 235, 0.5)',
+                'rgba(255, 206, 86, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(153, 102, 255, 0.5)',
+                'rgba(255, 159, 64, 0.5)',
+                'rgba(199, 199, 199, 0.5)'
+            ];
+
+            const strongColors = [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(199, 199, 199, 1)'
+            ];
+
+            const datasets = Object.keys(data).map((key, index) => ({
+                label: key,
+                data: data[key],
+                backgroundColor: type === 'bar' ? strongColors[index % strongColors.length] : colors[index % colors.length],
+                borderColor: colors[index % colors.length],
+                borderWidth: 2
+            }));
+
+            if (type === 'doughnut') {
+                const aggregatedData = Object.keys(data).reduce((acc, key) => {
+                    acc[key] = data[key].reduce((a, b) => a + b, 0);
+                    return acc;
+                }, {});
+
+                return new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(aggregatedData),
+                        datasets: [{
+                            label: label,
+                            data: Object.values(aggregatedData),
+                            backgroundColor: strongColors,
+                            borderColor: strongColors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true
+                    }
+                });
+            } else {
+                return new Chart(ctx, {
+                    type: type,
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            },
+                            x: {
+                                stacked: type === 'bar'
+                            },
+                            y: {
+                                stacked: type === 'bar'
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchData();
+        });
+    </script>
+</body>
+</html>
