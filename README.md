@@ -1,18 +1,18 @@
-# EduInsights
+# EduInsights 📊📚
 
 EduInsights é uma plataforma de visualização de dados e de simulados, projetada para fornecer insights educacionais de maneira intuitiva e interativa.
 
 ## Tecnologias Utilizadas
 
-- **Frontend:**
+- **Frontend:** 🖥️
   - HTML
   - CSS
   - JavaScript
   - Chart.js
 
-- **Backend:**
+- **Backend:** 🔧
   - Django
   - Django REST Framework
 
-- **Banco de Dados:**
+- **Banco de Dados:** 🗄️
   - SQLite
